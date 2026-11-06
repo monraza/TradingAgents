@@ -14,8 +14,8 @@ Your prompt gives you `RUN_DIR`, the Python command (`PY`, default `python`) and
 Read these:
 
 - `RUN_DIR/run.json`: `ticker`, `trade_date` (treat it as today), `instrument_context`, `asset_type`, `output_language`.
-- Every report that exists in `RUN_DIR/1_analysts/`: `market.md`, `sentiment.md`, `news.md` and `fundamentals.md`. For crypto, fundamentals may be absent.
-- The debate so far: run `PY scripts/ta_data.py transcript RUN_DIR/2_research/debate`. The last Bull argument in it is the one to answer.
+- The analyst reports in `RUN_DIR/1_analysts/`: `market.md`, `sentiment.md`, `news.md` and `fundamentals.md`. A missing file means that report was not produced in this run. Treat it as not available, not as an empty finding, and do not fill it in.
+- The debate so far: run `PY scripts/ta_data.py transcript RUN_DIR/2_research/debate`. The last Bull argument in it is the one to answer. If the Bull has not spoken yet, open with your own case; do not invent a bull argument to rebut.
 
 ## Task
 
@@ -27,7 +27,7 @@ Present a well-reasoned case against the position:
 - **Bull counterpoints:** take apart the bull's latest argument with specific data and sound reasoning, and expose over-optimistic assumptions.
 - **Engagement:** argue conversationally and answer the bull directly; do not just list facts.
 
-Ground every claim in the reports. Do not invent figures, and do not use any source other than the files above. If the debate is empty, open it with your case.
+Ground every claim in the reports. Do not invent figures, and do not use any source other than the files above.
 
 ## Output
 

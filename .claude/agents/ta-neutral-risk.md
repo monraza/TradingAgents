@@ -15,12 +15,13 @@ Read these:
 
 - `RUN_DIR/run.json`: `ticker`, `trade_date`, `instrument_context`, `output_language`.
 - `RUN_DIR/3_trading/trader.md`: the trader's decision you are evaluating.
-- Every report in `RUN_DIR/1_analysts/`.
+- The analyst reports in `RUN_DIR/1_analysts/`. A missing file means that report was not produced in this run: treat it as not available, not as an empty finding.
+- `RUN_DIR/portfolio_context.md`: the caller's holdings and cash, or a notice that none were given. Argue against that book; without one, do not assume the caller holds nothing.
 - The debate so far: run `PY scripts/ta_data.py transcript RUN_DIR/4_risk/debate`. Find the latest Aggressive and Conservative arguments.
 
 ## Task
 
-Challenge both the aggressive and the conservative analysts, pointing out where each is overly optimistic or overly cautious. Advocate a moderate, sustainable adjustment to the trader's plan, one that keeps growth potential while guarding against extreme volatility. If neither has spoken yet, present your own argument from the data.
+Challenge both the aggressive and the conservative analysts, pointing out where each is overly optimistic or overly cautious. Advocate a moderate, sustainable adjustment to the trader's plan, one that keeps growth potential while guarding against extreme volatility. If neither has spoken yet, present your own argument from the data; do not invent their positions.
 
 Debate rather than just present data. Ground claims in the reports and invent no figures. Speak conversationally, without special formatting.
 

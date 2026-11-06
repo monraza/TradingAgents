@@ -330,7 +330,7 @@ An empty `positions` list means a flat book, which is different from passing not
 
 ## Running in Claude Code (no API key)
 
-TradingAgents can also run as a Claude Code agent workflow. Claude Code does the reasoning for every role, so the run uses your Claude subscription (Pro or Max) instead of a paid LLM API key. The Python package is used only for market data and the decision log; the default data vendors (Yahoo Finance, StockTwits, Reddit, Polymarket) need no keys. Set `FRED_API_KEY` if you want FRED macro data.
+TradingAgents can also run as a Claude Code agent workflow. Claude Code does the reasoning for every role, so the run uses your Claude subscription (Pro or Max) instead of a paid LLM API key. The Python package is used only for market data and the decision log; the default data vendors (Yahoo Finance, SEC EDGAR, StockTwits, Reddit, Polymarket) need no keys. Set `FRED_API_KEY` if you want FRED macro data.
 
 ```bash
 pip install -e .
@@ -343,6 +343,7 @@ Then, inside Claude Code:
 /trading-analysis NVDA 2026-01-15
 /trading-analysis 0700.HK rounds=2 risk_rounds=2
 /trading-analysis BTC-USD analysts=market,sentiment,news
+/trading-analysis NVDA portfolio=my_book.json
 ```
 
 The `/trading-analysis` skill (`.claude/skills/trading-analysis/SKILL.md`) runs the same pipeline as the LangGraph version, with one Claude Code subagent per role (`.claude/agents/ta-*.md`):
@@ -353,7 +354,9 @@ The `/trading-analysis` skill (`.claude/skills/trading-analysis/SKILL.md`) runs 
 4. The Aggressive, Conservative and Neutral risk analysts debate it.
 5. The Portfolio Manager gives the final 5-tier rating, using lessons from past decisions.
 
-The agents get their data through `scripts/ta_data.py`, which wraps the same tools and vendor routing as the Python agents (`python scripts/ta_data.py --help`). Each run is saved under `reports/<TICKER>/<DATE>/` in the same layout as a CLI run, with a `complete_report.md`. Decisions go to the shared decision log at `~/.tradingagents/memory/trading_memory.md`, and the skill writes reflections on past calls once their returns are known. An interrupted run resumes from the first missing step.
+The agents get their data through `scripts/ta_data.py` (`python scripts/ta_data.py --help`), which calls the same data tools as the Python agents. Each data command reads the ticker and trade date from the run, so, as in a graph run, a run dated in the past only sees data as it stood that day. A `portfolio=` file takes the same JSON as the CLI's `--portfolio` (see [Current holdings](#current-holdings)).
+
+Each run is saved under `reports/<TICKER>/<DATE>/` in the same layout as a CLI run, with `complete_report.md` and `complete_report.html`. Decisions go to the shared memory log at `~/.tradingagents/memory/trading_memory.md`. At the start of each run the skill settles past decisions whose holding window has traded and writes a reflection on each. An interrupted run resumes from the first missing step.
 
 A default run uses about a dozen subagent calls, which count toward your subscription's usage limits. The analysts, researchers, trader and risk analysts run on Sonnet; the Research Manager and Portfolio Manager use your session's model. Change `model:` in an agent's file to adjust this.
 
